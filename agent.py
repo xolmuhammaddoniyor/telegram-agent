@@ -76,7 +76,7 @@ class Settings:
 # keyingisi sinaladi. .env dagi GEMINI_TEXT_MODEL / GEMINI_IMAGE_MODEL
 # bitta modelni majburlaydi.
 TEXT_MODELS = ["gemini-3-flash-preview", "gemini-flash-latest", "gemini-3.8-flash"]
-IMAGE_MODELS = ["gemini-3.1-flash-image", "gemini-3-pro-image", "gemini-2.5-flash-image"]
+IMAGE_MODELS = ["gemini-3.1-flash-lite-image", "gemini-3.1-flash-image", "gemini-2.5-flash-image"]
 
 
 class ContentGenerator:
