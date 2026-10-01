@@ -27,6 +27,9 @@ posts:
       Ilhomlantiruvchi, zamonaviy va yorqin illyustratsiya: yangi kun, harakat
       va o'sish kayfiyati. Rasmda hech qanday yozuv yoki matn bo'lmasin.
     aspect_ratio: "1:1"
+    # Bepul Gemini tarifida rasm yaratish chegarasi nol. Google loyihasida
+    # to'lov yoqilgach, bu qatorni o'chiring yoki true qiling.
+    image: false
     texts:
       - "Katta yo'l ham birinchi qadamdan boshlanadi. Bugun shu qadamni tashlang. 💪\n\n#motivatsiya #maqsad"
       - "Kechagi o'zingizdan bir qadam oldinda bo'lsangiz, bu allaqachon g'alaba. 🚀\n\n#rivojlanish #motivatsiya"
