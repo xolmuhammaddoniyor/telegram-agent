@@ -111,4 +111,7 @@ GitHub jadvali ba'zan 5-15 daqiqa kechikadi. Aniq daqiqada chiqishi muhim bo'lsa
 - Rasm yaratilmasa (masalan, xavfsizlik filtri sababli), post rasmsiz yuboriladi va logda ogohlantirish chiqadi.
 - Matn 1024 belgidan uzun bo'lsa, avval rasm, keyin matn alohida xabar bo'lib chiqadi.
 - `Telegram sendPhoto xatosi: chat not found` — kanal ID noto'g'ri yoki bot kanalga admin qilinmagan.
-- Model nomlari o'zgarsa, `.env` da `GEMINI_IMAGE_MODEL` va `GEMINI_TEXT_MODEL` ni almashtiring.
+- Model band (503) yoki olib tashlangan (404) bo'lsa, agent ro'yxatdagi keyingi modelni sinaydi.
+  Bitta modelni majburlash uchun `.env` da `GEMINI_TEXT_MODEL` yoki `GEMINI_IMAGE_MODEL` ni yozing.
+- `429 ... limit: 0` xatosi rasm modellarida: bepul tarifda rasm yaratish berilmagan.
+  Google loyihasida to'lovni (billing) yoqish kerak, aks holda postlar rasmsiz chiqadi.

@@ -45,6 +45,14 @@ class Settings:
     image_model: str
     text_model: str
 
+    @property
+    def text_models(self) -> list[str]:
+        return [self.text_model] if self.text_model else TEXT_MODELS
+
+    @property
+    def image_models(self) -> list[str]:
+        return [self.image_model] if self.image_model else IMAGE_MODELS
+
     @classmethod
     def from_env(cls, require_telegram: bool = True) -> "Settings":
         def get(name: str, required: bool = True) -> str:
@@ -57,12 +65,18 @@ class Settings:
             bot_token=get("TELEGRAM_BOT_TOKEN", require_telegram),
             channel_id=get("TELEGRAM_CHANNEL_ID", require_telegram),
             gemini_api_key=get("GEMINI_API_KEY", required=False),
-            image_model=os.environ.get("GEMINI_IMAGE_MODEL", "gemini-3.1-flash-image"),
-            text_model=os.environ.get("GEMINI_TEXT_MODEL", "gemini-3.8-flash"),
+            image_model=os.environ.get("GEMINI_IMAGE_MODEL", ""),
+            text_model=os.environ.get("GEMINI_TEXT_MODEL", ""),
         )
 
 
 # ---------------------------------------------------------------- Gemini
+
+# Model band bo'lsa (503) yoki olib tashlangan bo'lsa (404), ro'yxatdagi
+# keyingisi sinaladi. .env dagi GEMINI_TEXT_MODEL / GEMINI_IMAGE_MODEL
+# bitta modelni majburlaydi.
+TEXT_MODELS = ["gemini-3.8-flash", "gemini-3-flash-preview", "gemini-flash-latest"]
+IMAGE_MODELS = ["gemini-3.1-flash-image", "gemini-3-pro-image", "gemini-2.5-flash-image"]
 
 
 class ContentGenerator:
@@ -76,6 +90,17 @@ class ContentGenerator:
         self.language = language
         self.style = style
 
+    def _try_models(self, models: list[str], call):
+        """Ro'yxatdagi modellarni navbat bilan sinaydi, birinchi ishlaganini qaytaradi."""
+        last = None
+        for model in models:
+            try:
+                return call(model)
+            except Exception as exc:
+                last = exc
+                log.warning("Model %s ishlamadi: %s", model, str(exc)[:160])
+        raise last if last else RuntimeError("Model ro'yxati bo'sh")
+
     def write_text(self, topic: str) -> str:
         if self.client is None:
             raise RuntimeError("GEMINI_API_KEY yo'q: config.yaml da postga 'text' yozing yoki kalitni qo'shing")
@@ -86,13 +111,14 @@ class ContentGenerator:
             f"Matn {CAPTION_LIMIT - 50} belgidan oshmasin. "
             "Faqat post matnini qaytar, boshqa izoh yozma. Markdown belgilarini ishlatma."
         )
-        response = self.client.models.generate_content(
-            model=self.settings.text_model, contents=prompt
-        )
-        text = (response.text or "").strip()
-        if not text:
-            raise RuntimeError("Gemini bo'sh matn qaytardi")
-        return text
+        def once(model: str) -> str:
+            response = self.client.models.generate_content(model=model, contents=prompt)
+            text = (response.text or "").strip()
+            if not text:
+                raise RuntimeError("Gemini bo'sh matn qaytardi")
+            return text
+
+        return self._try_models(self.settings.text_models, once)
 
     def make_image(self, topic: str, image_prompt: str | None, aspect_ratio: str) -> bytes:
         if self.client is None:
@@ -103,19 +129,22 @@ class ContentGenerator:
             f"Telegram kanal posti uchun chiroyli, yuqori sifatli illyustratsiya. "
             f"Mavzu: {topic}. Rasmda hech qanday yozuv yoki matn bo'lmasin."
         )
-        response = self.client.models.generate_content(
-            model=self.settings.image_model,
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                response_modalities=["IMAGE"],
-                image_config=types.ImageConfig(aspect_ratio=aspect_ratio),
-            ),
-        )
-        for candidate in response.candidates or []:
-            for part in (candidate.content.parts if candidate.content else None) or []:
-                if part.inline_data and part.inline_data.data:
-                    return part.inline_data.data
-        raise RuntimeError("Gemini rasm qaytarmadi (ehtimol so'rov xavfsizlik filtridan o'tmadi)")
+        def once(model: str) -> bytes:
+            response = self.client.models.generate_content(
+                model=model,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_modalities=["IMAGE"],
+                    image_config=types.ImageConfig(aspect_ratio=aspect_ratio),
+                ),
+            )
+            for candidate in response.candidates or []:
+                for part in (candidate.content.parts if candidate.content else None) or []:
+                    if part.inline_data and part.inline_data.data:
+                        return part.inline_data.data
+            raise RuntimeError("Gemini rasm qaytarmadi (ehtimol xavfsizlik filtri)")
+
+        return self._try_models(self.settings.image_models, once)
 
 
 # ---------------------------------------------------------------- Telegram
