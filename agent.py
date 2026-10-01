@@ -57,8 +57,8 @@ class Settings:
             bot_token=get("TELEGRAM_BOT_TOKEN", require_telegram),
             channel_id=get("TELEGRAM_CHANNEL_ID", require_telegram),
             gemini_api_key=get("GEMINI_API_KEY", required=False),
-            image_model=os.environ.get("GEMINI_IMAGE_MODEL", "gemini-2.5-flash-image"),
-            text_model=os.environ.get("GEMINI_TEXT_MODEL", "gemini-2.5-flash"),
+            image_model=os.environ.get("GEMINI_IMAGE_MODEL", "gemini-3.1-flash-image"),
+            text_model=os.environ.get("GEMINI_TEXT_MODEL", "gemini-3.8-flash"),
         )
 
 

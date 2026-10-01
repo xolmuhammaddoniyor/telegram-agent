@@ -3,7 +3,7 @@
 Agent siz belgilagan vaqtlarda Telegram kanalingizga post joylaydi:
 
 1. Gemini post matnini yozadi (yoki siz tayyor matn berasiz).
-2. Gemini **Nano Banana** (`gemini-2.5-flash-image`) postga rasm chizadi.
+2. Gemini **Nano Banana** (`gemini-3.1-flash-image`) postga rasm chizadi.
 3. Rasm va matn bot orqali kanalga yuboriladi.
 
 ## 1. Kerakli kalitlar
