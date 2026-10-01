@@ -1,0 +1,25 @@
+# Vaqt mintaqasi (post vaqtlari shu mintaqa bo'yicha hisoblanadi)
+timezone: Asia/Tashkent
+
+# Post matni qaysi tilda yozilsin
+language: o'zbek
+
+# Har bir postga umumiy uslub ko'rsatmasi
+style: >
+  Qisqa, qiziqarli va foydali yoz. 2-4 ta paragraf, mos emoji va oxirida
+  2-3 ta heshteg qo'sh.
+
+# Jadval. time — "SS:DD" formatida.
+# days — ixtiyoriy: mon,tue,wed,thu,fri,sat,sun (yozilmasa har kuni).
+# topic — post mavzusi. text — ixtiyoriy: tayyor matn (bo'lsa AI matn yozmaydi).
+# image_prompt — ixtiyoriy: rasm uchun alohida ko'rsatma.
+# image — ixtiyoriy: false bo'lsa rasm generatsiya qilinmaydi.
+posts:
+  - time: "09:00"
+    topic: "Kun boshlanishi uchun motivatsion fikr"
+  - time: "13:00"
+    days: mon,wed,fri
+    topic: "Sun'iy intellekt sohasidagi foydali maslahat"
+  - time: "19:30"
+    topic: "Kechki dam olish uchun kitob tavsiyasi"
+    image_prompt: "Qulay xonada stol ustida ochiq kitob va choy, iliq kechki yorug'lik, fotorealistik"
