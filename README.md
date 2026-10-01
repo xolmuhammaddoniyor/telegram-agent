@@ -51,6 +51,21 @@ posts:
     image: false                  # rasmsiz post
 ```
 
+Aniq vaqt o'rniga takrorlanuvchi jadval ham mumkin. `every` necha daqiqada bir
+post chiqishini bildiradi (60 ning bo'luvchisi: 5, 10, 15, 30, 60):
+
+```yaml
+posts:
+  - every: 5
+    text: "Sinov posti ✅"
+    image: false
+```
+
+GitHub Actions'da eng qisqa oraliq 5 daqiqa, lekin u ko'pincha kechikadi va
+yuklama ko'p bo'lganda ba'zi ishga tushishlar butunlay o'tkazib yuboriladi.
+Aniq har 5 daqiqada chiqishi kerak bo'lsa, `python agent.py` ni doim yoqiq
+kompyuterda yoki serverda ishlating.
+
 Qo'shimcha maydonlar: `aspect_ratio` (`"1:1"`, `"16:9"`, `"9:16"`, `"4:3"` ...).
 Umumiy uslub va til `style` va `language` maydonlarida.
 

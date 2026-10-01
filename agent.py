@@ -205,15 +205,21 @@ class Agent:
         tz = self.config.get("timezone", "Asia/Tashkent")
         scheduler = BlockingScheduler(timezone=tz)
         for i, post in enumerate(self.config["posts"]):
-            hour, minute = parse_time(post["time"])
-            trigger = CronTrigger(
-                hour=hour, minute=minute, day_of_week=post.get("days", "*"), timezone=tz
-            )
+            if post.get("every"):
+                minutes = parse_every(post["every"])
+                trigger = CronTrigger(minute=f"*/{minutes}", timezone=tz)
+                qachon = f"har {minutes} daqiqada"
+            else:
+                hour, minute = parse_time(post["time"])
+                trigger = CronTrigger(
+                    hour=hour, minute=minute, day_of_week=post.get("days", "*"), timezone=tz
+                )
+                qachon = f"{post['time']} ({post.get('days', 'har kuni')})"
             scheduler.add_job(
                 self.run_post, trigger, args=[i], id=f"post-{i}",
                 misfire_grace_time=600, coalesce=True, max_instances=1,
             )
-            log.info("Rejalashtirildi: #%d %s (%s) — %s", i, post["time"], post.get("days", "har kuni"), post.get("topic", ""))
+            log.info("Rejalashtirildi: #%d %s — %s", i, qachon, post.get("topic", ""))
         log.info("Agent ishga tushdi (%s). To'xtatish uchun Ctrl+C.", tz)
         try:
             scheduler.start()
@@ -231,11 +237,24 @@ def parse_time(value: str) -> tuple[int, int]:
     return hour, minute
 
 
+def parse_every(value) -> int:
+    """Takrorlanish oralig'ini daqiqalarda qaytaradi (60 ning bo'luvchisi)."""
+    try:
+        minutes = int(value)
+    except (TypeError, ValueError):
+        sys.exit(f"Xato: 'every' butun son bo'lishi kerak: {value!r}")
+    if not 1 <= minutes <= 60 or 60 % minutes:
+        sys.exit(f"Xato: 'every' 60 ning bo'luvchisi bo'lsin (1,2,3,4,5,6,10,12,15,20,30,60): {value!r}")
+    return minutes
+
+
 DAY_NAMES = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 
 
 def utc_cron(post: dict, tz: str) -> str:
     """Post vaqtini GitHub Actions uchun UTC cron ifodasiga aylantiradi."""
+    if post.get("every"):
+        return f"*/{parse_every(post['every'])} * * * *"
     hour, minute = parse_time(post["time"])
     offset = int(datetime.now(ZoneInfo(tz)).utcoffset().total_seconds() // 60)
     total = hour * 60 + minute - offset
@@ -307,9 +326,12 @@ def load_config(path: Path) -> dict:
     if not config.get("posts"):
         sys.exit(f"Xato: {path} faylida 'posts' ro'yxati bo'sh")
     for post in config["posts"]:
-        if "time" not in post:
-            sys.exit(f"Xato: har bir postda 'time' bo'lishi kerak: {post}")
-        parse_time(post["time"])
+        if post.get("every"):
+            parse_every(post["every"])
+        elif "time" in post:
+            parse_time(post["time"])
+        else:
+            sys.exit(f"Xato: har bir postda 'time' yoki 'every' bo'lishi kerak: {post}")
     return config
 
 

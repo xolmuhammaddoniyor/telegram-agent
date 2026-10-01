@@ -9,17 +9,25 @@ style: >
   Qisqa, qiziqarli va foydali yoz. 2-4 ta paragraf, mos emoji va oxirida
   2-3 ta heshteg qo'sh.
 
-# Jadval. time — "SS:DD" formatida.
+# Jadval. Har bir postda yo 'time', yo 'every' bo'lsin:
+#   time  — "SS:DD" formatida aniq vaqt. days bilan birga ishlatiladi.
+#   every — necha daqiqada bir takrorlansin (60 ning bo'luvchisi: 5, 10, 15, 30, 60).
 # days — ixtiyoriy: mon,tue,wed,thu,fri,sat,sun (yozilmasa har kuni).
 # topic — post mavzusi. text — ixtiyoriy: tayyor matn (bo'lsa AI matn yozmaydi).
 # image_prompt — ixtiyoriy: rasm uchun alohida ko'rsatma.
 # image — ixtiyoriy: false bo'lsa rasm generatsiya qilinmaydi.
 posts:
-  - time: "09:00"
-    topic: "Kun boshlanishi uchun motivatsion fikr"
-  - time: "13:00"
-    days: mon,wed,fri
-    topic: "Sun'iy intellekt sohasidagi foydali maslahat"
-  - time: "19:30"
-    topic: "Kechki dam olish uchun kitob tavsiyasi"
-    image_prompt: "Qulay xonada stol ustida ochiq kitob va choy, iliq kechki yorug'lik, fotorealistik"
+  - every: 5
+    topic: "Sinov posti"
+    text: "Sinov posti ✅ Agent har 5 daqiqada ishlayapti."
+    image: false
+
+# Avvalgi jadval. Kerak bo'lsa yuqoridagi 'every' postni o'chirib, bularni qaytaring.
+# posts:
+#   - time: "09:00"
+#     topic: "Kun boshlanishi uchun motivatsion fikr"
+#   - time: "13:00"
+#     days: mon,wed,fri
+#     topic: "Sun'iy intellekt sohasidagi foydali maslahat"
+#   - time: "19:30"
+#     topic: "Kechki dam olish uchun kitob tavsiyasi"
