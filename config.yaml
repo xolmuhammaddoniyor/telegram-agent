@@ -20,8 +20,13 @@ style: >
 # image — ixtiyoriy: false bo'lsa rasm generatsiya qilinmaydi.
 posts:
   - every: 20
-    topic: "Motivatsiya"
-    image: false
+    # Gemini kaliti bo'lsa, matnni AI shu mavzuda yozadi va rasm chizadi.
+    # Kalit yo'q yoki xato bo'lsa, pastdagi tayyor matnlardan biri chiqadi.
+    topic: "Kundalik motivatsiya: ish, o'qish va o'zini rivojlantirish haqida qisqa ilhomlantiruvchi fikr"
+    image_prompt: >
+      Ilhomlantiruvchi, zamonaviy va yorqin illyustratsiya: yangi kun, harakat
+      va o'sish kayfiyati. Rasmda hech qanday yozuv yoki matn bo'lmasin.
+    aspect_ratio: "1:1"
     texts:
       - "Katta yo'l ham birinchi qadamdan boshlanadi. Bugun shu qadamni tashlang. 💪\n\n#motivatsiya #maqsad"
       - "Kechagi o'zingizdan bir qadam oldinda bo'lsangiz, bu allaqachon g'alaba. 🚀\n\n#rivojlanish #motivatsiya"

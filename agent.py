@@ -164,12 +164,26 @@ class Agent:
         )
         self.publisher = None if dry_run else TelegramPublisher(settings)
 
+    def write_text(self, post: dict, topic: str) -> str:
+        """Matnni AI yozadi; kalit yo'q yoki xato bo'lsa, tayyor matnga qaytadi."""
+        if topic and self.generator.client:
+            try:
+                return self.generator.write_text(topic)
+            except Exception as exc:
+                log.warning("AI matn yozmadi, tayyor matn ishlatiladi: %s", exc)
+        text = pick_text(post)
+        if not text:
+            raise RuntimeError(
+                "Matn yo'q: GEMINI_API_KEY ni qo'shing yoki config.yaml ga 'text'/'texts' yozing"
+            )
+        return text
+
     def run_post(self, index: int) -> bool:
         post = self.config["posts"][index]
         topic = post.get("topic", "")
         log.info("Post #%d tayyorlanmoqda: %s", index, topic)
         try:
-            text = pick_text(post) or self.generator.write_text(topic)
+            text = self.write_text(post, topic)
             image = None
             if post.get("image", True):
                 try:
