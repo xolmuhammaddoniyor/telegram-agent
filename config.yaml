@@ -19,7 +19,7 @@ style: >
 # image_prompt — ixtiyoriy: rasm uchun alohida ko'rsatma.
 # image — ixtiyoriy: false bo'lsa rasm generatsiya qilinmaydi.
 posts:
-  - every: 5
+  - every: 20
     topic: "Motivatsiya"
     image: false
     texts:
