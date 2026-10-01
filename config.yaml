@@ -19,7 +19,7 @@ style: >
 # image_prompt — ixtiyoriy: rasm uchun alohida ko'rsatma.
 # image — ixtiyoriy: false bo'lsa rasm generatsiya qilinmaydi.
 posts:
-  - every: 20
+  - time: "09:00"
     # Gemini kaliti bo'lsa, matnni AI shu mavzuda yozadi va rasm chizadi.
     # Kalit yo'q yoki xato bo'lsa, pastdagi tayyor matnlardan biri chiqadi.
     topic: "Kundalik motivatsiya: ish, o'qish va o'zini rivojlantirish haqida qisqa ilhomlantiruvchi fikr"
