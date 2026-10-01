@@ -16,7 +16,7 @@ import logging
 import os
 import sys
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -169,7 +169,7 @@ class Agent:
         topic = post.get("topic", "")
         log.info("Post #%d tayyorlanmoqda: %s", index, topic)
         try:
-            text = post.get("text") or self.generator.write_text(topic)
+            text = pick_text(post) or self.generator.write_text(topic)
             image = None
             if post.get("image", True):
                 try:
@@ -225,6 +225,22 @@ class Agent:
             scheduler.start()
         except (KeyboardInterrupt, SystemExit):
             log.info("Agent to'xtatildi")
+
+
+def pick_text(post: dict) -> str | None:
+    """Tayyor matnni tanlaydi: 'text' bitta matn, 'texts' ro'yxatdan navbatdagisi.
+
+    Har bir ishga tushish alohida jarayon bo'lgani uchun navbat vaqt bo'yicha
+    hisoblanadi: ketma-ket postlarda har xil matn chiqadi.
+    """
+    texts = post.get("texts")
+    if texts:
+        if not isinstance(texts, list):
+            sys.exit("Xato: 'texts' ro'yxat bo'lishi kerak")
+        step = parse_every(post["every"]) if post.get("every") else 24 * 60
+        slot = int(datetime.now(timezone.utc).timestamp()) // 60 // step
+        return str(texts[slot % len(texts)])
+    return post.get("text")
 
 
 def parse_time(value: str) -> tuple[int, int]:

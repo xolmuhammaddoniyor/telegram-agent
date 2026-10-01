@@ -13,14 +13,28 @@ style: >
 #   time  — "SS:DD" formatida aniq vaqt. days bilan birga ishlatiladi.
 #   every — necha daqiqada bir takrorlansin (60 ning bo'luvchisi: 5, 10, 15, 30, 60).
 # days — ixtiyoriy: mon,tue,wed,thu,fri,sat,sun (yozilmasa har kuni).
-# topic — post mavzusi. text — ixtiyoriy: tayyor matn (bo'lsa AI matn yozmaydi).
+# topic — post mavzusi (AI matn yozganda ishlatiladi).
+# text  — ixtiyoriy: bitta tayyor matn.
+# texts — ixtiyoriy: matnlar ro'yxati, navbat bilan chiqadi.
 # image_prompt — ixtiyoriy: rasm uchun alohida ko'rsatma.
 # image — ixtiyoriy: false bo'lsa rasm generatsiya qilinmaydi.
 posts:
   - every: 5
-    topic: "Sinov posti"
-    text: "Sinov posti ✅ Agent har 5 daqiqada ishlayapti."
+    topic: "Motivatsiya"
     image: false
+    texts:
+      - "Katta yo'l ham birinchi qadamdan boshlanadi. Bugun shu qadamni tashlang. 💪\n\n#motivatsiya #maqsad"
+      - "Kechagi o'zingizdan bir qadam oldinda bo'lsangiz, bu allaqachon g'alaba. 🚀\n\n#rivojlanish #motivatsiya"
+      - "Kichik, lekin har kuni. Muntazamlik iste'doddan kuchliroq. ⏳\n\n#muntazamlik #odat"
+      - "Qiyin kun — bu yomon hayot emas. Nafas oling va davom eting. 🌤\n\n#sabr #motivatsiya"
+      - "Bilim to'plash emas, uni qo'llash kuch beradi. Bugun bittasini sinab ko'ring. 📘\n\n#bilim #amaliyot"
+      - "Mukammal payt hech qachon kelmaydi. Shuning uchun hozir boshlang. ⚡️\n\n#boshlash #motivatsiya"
+      - "Xato — bu mag'lubiyat emas, bu dars. Darsni oling va oldinga yuring. 🧭\n\n#tajriba #o'sish"
+      - "Siz boshqalar bilan emas, kechagi o'zingiz bilan raqobatdasiz. 🪞\n\n#o'sish #motivatsiya"
+      - "Diqqatingiz qayerda bo'lsa, natija ham o'sha yerda bo'ladi. 🎯\n\n#diqqat #samaradorlik"
+      - "Dam olish ham ishning bir qismi. Kuchni tiklang, keyin davom eting. 🌿\n\n#salomatlik #muvozanat"
+      - "Bugun qilgan kichik ishingiz bir yildan keyin katta farq bo'ladi. 🌱\n\n#sabr #maqsad"
+      - "Rejani yozing. Boshda turgan reja — bu hali orzu. ✍️\n\n#reja #maqsad"
 
 # Avvalgi jadval. Kerak bo'lsa yuqoridagi 'every' postni o'chirib, bularni qaytaring.
 # posts:
